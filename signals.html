@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signals Page</title>
+	<link rel="stylesheet" href="style.css">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        body {
+            width: calc(100vh * 9 / 16);
+            height: 100vh; /* Высота всегда 100% окна */
+            background: url('assets/getsignals.jpeg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 7px;
+			margin-top: auto; 
+            padding-bottom: 250px; 
+        }
+        select {
+		    width: 280px; 
+            height: 50px;
+            padding: 10px;
+            font-size: 16px;
+            border: 0px solid #ccc;
+            border-radius: 30px;
+			text-align: center;
+	        background: rgba(255, 255, 255, 0.4); /* Полупрозрачный фон */
+            color: black;
+            backdrop-filter: blur(10px); /* Эффект блюра */
+        }
+        button {
+		    width: 280px; 
+            height: 50px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: white;
+
+        }
+        button:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <select id="currency-pair">
+<option value="EUR/CHF OTC">EUR/CHF OTC</option>
+<option value="EUR/GBP OTC">EUR/GBP OTC</option>
+<option value="EUR/HUF OTC">EUR/HUF OTC</option>
+<option value="EUR/JPY OTC">EUR/JPY OTC</option>
+<option value="EUR/RUB OTC">EUR/RUB OTC</option>
+<option value="EUR/TRY OTC">EUR/TRY OTC</option>
+<option value="EUR/USD OTC">EUR/USD OTC</option>
+<option value="MAD/USD OTC">MAD/USD OTC</option>
+<option value="NZD/USD OTC">NZD/USD OTC</option>
+<option value="TND/USD OTC">TND/USD OTC</option>
+<option value="USD/BRL OTC">USD/BRL OTC</option>
+<option value="USD/CHF OTC">USD/CHF OTC</option>
+<option value="USD/CNH OTC">USD/CNH OTC</option>
+<option value="USD/DZD OTC">USD/DZD OTC</option>
+<option value="USD/MXN OTC">USD/MXN OTC</option>
+<option value="USD/PKR OTC">USD/PKR OTC</option>
+<option value="USD/RUB OTC">USD/RUB OTC</option>
+<option value="NZD/JPY OTC">NZD/JPY OTC</option>
+<option value="AUD/NZD OTC">AUD/NZD OTC</option>
+        </select>
+
+        <select id="expiration-time">
+            <option value="S30">S30</option>
+            <option value="M1">М1</option>
+            <option value="M3">М3</option>
+			<option value="M5">M5</option>
+        </select>
+
+        <div id="signal-output">-</div>
+
+        <button id="generate-signal">Получить сигнал</button>
+    </div>
+
+    <script>
+	document.getElementById('generate-signal').addEventListener('click', () => {
+    const pair = document.getElementById('currency-pair').value;
+    const time = document.getElementById('expiration-time').value;
+
+    // Генерация направления
+    const direction = Math.random() > 0.5 ? 'Вверх' : 'Вниз';
+    const signalOutput = document.getElementById('signal-output');
+
+    // Устанавливаем текст и атрибут data-direction
+    signalOutput.textContent = direction;
+    signalOutput.setAttribute('data-direction', direction);
+
+    // Блокируем кнопку после генерации сигнала
+    startTimer(time);
+
+    console.log(`Выбрана пара: ${pair}, Время экспирации: ${time}, Направление: ${direction}`);
+});
+
+function startTimer(expirationTime) {
+    const button = document.getElementById('generate-signal');
+    let timeRemaining = getTimeInSeconds(expirationTime); // Получаем время в секундах
+
+    button.disabled = true; // Блокируем кнопку
+    updateButtonText(timeRemaining);
+
+    signalTimer = setInterval(() => {
+        timeRemaining--;
+        updateButtonText(timeRemaining);
+
+        if (timeRemaining <= 0) {
+            clearInterval(signalTimer);
+            button.disabled = false; // Разблокируем кнопку
+            button.textContent = "Получить сигнал";
+        }
+    }, 1000);
+}
+
+function getTimeInSeconds(expirationTime) {
+    switch (expirationTime) {
+	    case "S30": return 30;
+        case "M1": return 60;
+		case "M3": return 180;
+        case "M5": return 300;
+        default: return 60;
+    }
+}
+
+function updateButtonText(timeRemaining) {
+    const button = document.getElementById('generate-signal');
+    button.textContent = `Следующий сигнал через ${timeRemaining} секунд`;
+}
+
+// Сбрасываем таймер и поле вывода при изменении параметров
+document.getElementById('currency-pair').addEventListener('change', resetTimerAndOutput);
+document.getElementById('expiration-time').addEventListener('change', resetTimerAndOutput);
+
+function resetTimerAndOutput() {
+    const button = document.getElementById('generate-signal');
+    const output = document.getElementById('signal-output');
+
+    clearInterval(signalTimer); // Останавливаем таймер
+    button.disabled = false; // Разблокируем кнопку
+    button.textContent = "Получить сигнал";
+
+    // Сбрасываем поле вывода и атрибут data-direction
+    output.textContent = "-";
+    output.removeAttribute('data-direction');
+}
+    </script>
+</body>
+</html>
