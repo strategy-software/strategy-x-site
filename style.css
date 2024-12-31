@@ -219,39 +219,3 @@ body::before {
     position: relative; /* Устанавливаем позицию для слоя */
     z-index: 1; /* Слой выше размытого фона */
 }
-
-/* Базовый стиль для контейнера */
-#site-container {
-    position: relative;
-    z-index: 1;
-    width: calc(100vh * 9 / 16); /* Соотношение сторон 9:16 */
-    height: 100vh; /* Фиксированная высота для десктопа */
-    background: url('assets/backgroundnum1.jpeg') no-repeat center center;
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-/* Для мобильных устройств в вертикальном положении */
-@media (orientation: portrait) {
-    #site-container {
-        width: 100%; /* Фон растягивается на всю ширину экрана */
-        height: 100%; /* Высота занимает весь экран */
-        background-size: cover; /* Масштабируем фон для полного покрытия */
-    }
-}
-
-/* Для планшетов и мобильных устройств */
-@media (max-width: 768px) {
-    #site-container {
-        padding: 0; /* Убираем лишние отступы, чтобы элементы не съезжали */
-    }
-
-    input[type="text"],
-    button {
-        width: 90%; /* Уменьшаем ширину полей и кнопок */
-    }
-}
