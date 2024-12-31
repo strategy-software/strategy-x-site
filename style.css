@@ -4,7 +4,6 @@ html, body {
     padding: 0;
     overflow: hidden; /* Убираем скроллинг */
     height: 100vh; /* Высота всегда равна высоте экрана */
-	height: -webkit-fill-available;
     font-family: Arial, sans-serif;
 }
 
