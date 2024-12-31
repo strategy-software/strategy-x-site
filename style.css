@@ -1,21 +1,16 @@
-/* Общие стили */
+:root {
+    --vh: 100vh; /* Начальное значение для высоты */
+}
+
 html, body {
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Убираем скроллинг */
-    height: 100vh; /* Высота всегда равна высоте экрана */
-	height: -webkit-fill-available;
-    font-family: Arial, sans-serif;
+    height: calc(var(--vh) * 100); /* Используем переменную для высоты */
 }
 
-/* Контейнер фиксированного соотношения 9:16 */
 #site-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: calc(100vh * 9 / 16);
-    height: 100vh;
+    height: calc(var(--vh) * 100); /* Применяем к основному контейнеру */
+    width: calc(100vw); /* Ширина всегда 100% экрана */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

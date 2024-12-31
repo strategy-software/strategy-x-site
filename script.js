@@ -12,3 +12,16 @@ function checkAccess() {
         result.style.color = "red";
     }
 }
+
+function updateViewportHeight() {
+    // Получаем высоту окна
+    const vh = window.innerHeight * 0.01;
+    // Обновляем значение переменной --vh
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+// Обновляем при загрузке страницы
+updateViewportHeight();
+
+// Обновляем при изменении размера окна (например, скрытие адресной строки)
+window.addEventListener('resize', updateViewportHeight);
